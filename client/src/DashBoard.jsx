@@ -6,7 +6,10 @@ import Metrics from "./component/Metrics/Metrics.jsx";
 import useFetchData from "./Hooks/useFetchData";
 import Info from "./component/Filter/Info.jsx";
 import AddCluster from "./component/AddCluster/AddCluster.jsx";
+import ActionButton from "./component/Common/ActionButton.jsx";
+import useLogin from "./Hooks/useLogin";
 const DashBoard = () => {
+  const { loginData } = useLogin();
   const { data, loading, error } = useFetchData("/data");
   const [minUsers, setMinUsers] = useState(0);
   const [minProjects, setMinProjects] = useState(0);
@@ -32,12 +35,11 @@ const DashBoard = () => {
       <div className="map-container w-full h-full rounded-2xl border border-gray-200 shadow bg-gray-50 overflow-hidden mb-6">
         <div className="p-4 md:pe-8 border-b-[1.5px] border-gray-200 text-xl flex justify-between items-center">
           <p>Clusters in India</p>
-          <button
-            className="border-blue-500 text-blue-500 border-2  px-4 py-1 text-sm rounded-3xl hover:bg-blue-500 hover:text-white transition-all duration-300"
-            onClick={() => setShowAddCluster(true)}
-          >
-            Add Cluster +
-          </button>
+          {loginData.isLoggedIn && (
+            <ActionButton onClick={() => setShowAddCluster(true)}>
+              Add Cluster +
+            </ActionButton>
+          )}
         </div>
         <div className="flex flex-col md:flex-row  w-full h-full ">
           <Map clusters={filteredData} />

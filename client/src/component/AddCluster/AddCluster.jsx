@@ -14,13 +14,24 @@ const AddCluster = ({ setShowAddCluster }) => {
     projects: "",
     leads: "",
   });
-  const [alert, setAlert] = useState(false);
-  const [alertText, setAlertText] = useState("");
+  const [alert, setAlert] = useState({
+    show: false,
+    text: "",
+    type: "success",
+  });
   const isNullOrempty = (value) => {
     if (value === "" || value === null || value === undefined) {
       return true;
     }
     return false;
+  };
+
+  const hideAlert = () => {
+    setAlert({
+      show: false,
+      text: "",
+      type: "",
+    });
   };
 
   const handleAddCluster = async (e) => {
@@ -53,27 +64,27 @@ const AddCluster = ({ setShowAddCluster }) => {
     try {
       const response = await api.post("/cluster", newCluster);
       console.log(response.data);
-      setAlertText("Cluster added successfully");
-      setAlert(true);
-      setTimeout(() => {
-        setAlert(false);
-      }, 3000);
+      setAlert({
+        show: true,
+        text: "Cluster added successfully",
+        type: "success",
+      });
     } catch (error) {
       console.log(error);
-      setAlertText("Error adding cluster, kindly try again");
-      setAlert(true);
-      setTimeout(() => {
-        setAlert(false);
-      }, 3000);
+      setAlert({
+        show: true,
+        text: "Error adding cluster, kindly try again",
+        type: "error",
+      });
     }
   };
 
   const alertUser = () => {
-    setAlertText("Please fill all fields");
-    setAlert(true);
-    setTimeout(() => {
-      setAlert(false);
-    }, 3000);
+    setAlert({
+      show: true,
+      text: "Please fill all fields",
+      type: "error",
+    });
   };
 
   const handleChange = (e) => {
@@ -135,7 +146,7 @@ const AddCluster = ({ setShowAddCluster }) => {
         >
           X
         </button>
-        {alert && <Alert>{alertText}</Alert>}
+        {alert.show && <Alert alert={alert} hideAlert={hideAlert} />}
       </div>
     </Modal>
   );
