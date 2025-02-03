@@ -1,11 +1,11 @@
 import { api } from "./api";
-
+import { LOGIN_ENDPOINT } from "./Urls";
 const TOKEN_KEY = "token";
 const USER_KEY = "user";
 
 const authService = {
   login: async (credentials) => {
-    const response = await api.post("/token", credentials);
+    const response = await api.post(LOGIN_ENDPOINT, credentials);
     if (response.data.status === 200) {
       localStorage.setItem(TOKEN_KEY, response.data.token);
       localStorage.setItem(USER_KEY, JSON.stringify(response.data.username));

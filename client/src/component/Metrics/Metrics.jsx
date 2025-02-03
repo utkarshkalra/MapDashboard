@@ -4,10 +4,11 @@ import useFetchData from "../../Hooks/useFetchData";
 import { PiUsersThree } from "react-icons/pi";
 import { GoProjectRoadmap, GoPerson } from "react-icons/go";
 import { PiChartPieSlice } from "react-icons/pi";
+import { GET_METRICS_ENDPOINT } from "../../services/Urls";
 
 const Metrics = () => {
   const [metrics, setMetrics] = useState({});
-  const { data, loading, error } = useFetchData("/metrics");
+  const { data, loading, error } = useFetchData(GET_METRICS_ENDPOINT);
 
   useEffect(() => {
     if (data && data.length > 0) {

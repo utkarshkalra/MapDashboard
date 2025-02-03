@@ -64,7 +64,11 @@ const Info = ({ clusters, minUsers, minProjects }) => {
           //loader
           <tbody>
             <tr className="h-40 text-center">
-              <td>Loading...</td>
+              <td>
+                {minUsers > 0 || minProjects > 0
+                  ? "No results found"
+                  : "Loading..."}
+              </td>
             </tr>
           </tbody>
         )}

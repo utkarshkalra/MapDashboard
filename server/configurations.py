@@ -1,15 +1,32 @@
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
-PASSWORD = "cakerusk50"
-uri = "mongodb+srv://utkarshkalra2001:{0}@analytics-dashboard.l6n7s.mongodb.net/?retryWrites=true&w=majority&appName=analytics-dashboard".format(PASSWORD)
+from pydantic_settings import BaseSettings
 
-# Create a new client and connect to the server
-client = MongoClient(uri, server_api=ServerApi('1'))
+from typing import Optional
+
 clusters = []
 metrics = []
-# Send a ping to confirm a successful connection
+
+
+
+class Settings(BaseSettings):
+    # database configurations
+    DATABASE_URL: Optional[str] = None
+    ADMIN_USER: Optional[str] = None
+    ADMIN_PASSWORD: Optional[str] = None
+    SECRET_KEY: Optional[str] = None
+    ALGORITHM: Optional[str] = None
+    ACCESS_TOKEN_EXPIRE_MINUTES: Optional[int] = None
+
+    class Config:
+        env_file = ".env"
+        from_attributes = True
+
+
 try:
-    print("Connecting to MongoDB...", uri)
+    print("Connecting to MongoDB...", Settings().DATABASE_URL)
+    client = MongoClient(Settings().DATABASE_URL, server_api=ServerApi('1'))
+    # Sending a ping to confirm a successful connection
     client.admin.command('ping')
     print("Pinged your deployment. You successfully connected to MongoDB!")
     db  =  client.analytics_dashboard
