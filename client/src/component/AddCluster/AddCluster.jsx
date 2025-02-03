@@ -1,95 +1,97 @@
+import { useState } from "react";
 import Modal from "../Common/Modal";
 import FloatingInput from "../Common/FloatingInput";
-import { useState } from "react";
-import PropTypes from "prop-types";
 import Alert from "../Common/Alert";
-import { api } from "../../services/api";
+import ActionButton from "../Common/ActionButton";
+import PropTypes from "prop-types";
+import clusterService from "../../services/clusterService";
+import { useAuth } from "../../context/AuthContext.jsx";
 
-const AddCluster = ({ setShowAddCluster }) => {
-  const [submitData, setSubmitData] = useState({
+const AddCluster = ({ setShowAddCluster, refreshClusters }) => {
+  const { isAuthenticated } = useAuth();
+  const [clusterData, setClusterData] = useState({
     name: "",
-    latitude: "",
-    longitude: "",
+    location: {
+      latitude: "",
+      longitude: "",
+    },
     users: "",
     projects: "",
     leads: "",
   });
+
   const [alert, setAlert] = useState({
     show: false,
     text: "",
     type: "success",
   });
-  const isNullOrempty = (value) => {
-    if (value === "" || value === null || value === undefined) {
-      return true;
-    }
-    return false;
-  };
 
-  const hideAlert = () => {
-    setAlert({
-      show: false,
-      text: "",
-      type: "",
-    });
+  const handleChange = (e) => {
+    const { id, value } = e.target;
+    if (id === "latitude" || id === "longitude") {
+      setClusterData((prev) => ({
+        ...prev,
+        location: {
+          ...prev.location,
+          [id]: value,
+        },
+      }));
+    } else {
+      setClusterData((prev) => ({
+        ...prev,
+        [id]: value,
+      }));
+    }
   };
 
   const handleAddCluster = async (e) => {
     e.preventDefault();
-    //verify data
-    if (
-      isNullOrempty(submitData.name) ||
-      isNullOrempty(submitData.latitude) ||
-      isNullOrempty(submitData.longitude) ||
-      isNullOrempty(submitData.users) ||
-      isNullOrempty(submitData.projects) ||
-      isNullOrempty(submitData.leads)
-    ) {
-      alertUser();
+
+    if (!isAuthenticated) {
+      setAlert({
+        show: true,
+        text: "Please login first",
+        type: "error",
+      });
       return;
     }
 
-    //add cluster
-    const newCluster = {
-      name: submitData.name,
-      location: {
-        latitude: submitData.latitude,
-        longitude: submitData.longitude,
-      },
-      users: submitData.users,
-      projects: submitData.projects,
-      leads: submitData.leads,
-    };
+    // Validate all fields are filled
+    const isValid =
+      Object.values(clusterData).every(
+        (value) => value !== "" && value !== null
+      ) &&
+      Object.values(clusterData.location).every(
+        (value) => value !== "" && value !== null
+      );
+
+    if (!isValid) {
+      setAlert({
+        show: true,
+        text: "Please fill all fields",
+        type: "error",
+      });
+      return;
+    }
 
     try {
-      const response = await api.post("/cluster", newCluster);
-      console.log(response.data);
+      await clusterService.addCluster(clusterData);
       setAlert({
         show: true,
         text: "Cluster added successfully",
         type: "success",
       });
+      refreshClusters();
+      setTimeout(() => setShowAddCluster(false), 1000);
     } catch (error) {
-      console.log(error);
       setAlert({
         show: true,
-        text: "Error adding cluster, kindly try again",
+        text: error.response?.data?.detail || "Failed to add cluster",
         type: "error",
       });
     }
   };
 
-  const alertUser = () => {
-    setAlert({
-      show: true,
-      text: "Please fill all fields",
-      type: "error",
-    });
-  };
-
-  const handleChange = (e) => {
-    setSubmitData((prev) => ({ ...prev, [e.target.id]: e.target.value }));
-  };
   return (
     <Modal>
       <div className="bg-gray-50 p-4 rounded-lg w-[350px] relative">
@@ -131,22 +133,35 @@ const AddCluster = ({ setShowAddCluster }) => {
             onChange={handleChange}
             type="number"
           />
-          <button
-            type="submit"
-            className="bg-blue-500 text-white px-4 py-2 rounded-md w-full"
-            onClick={handleAddCluster}
-          >
-            Add
-          </button>
+          <div className="flex gap-2 my-3 justify-end">
+            <ActionButton
+              type="submit"
+              filled={true}
+              onClick={handleAddCluster}
+            >
+              Add
+            </ActionButton>
+            <ActionButton
+              type="button"
+              filled={false}
+              onClick={() => setShowAddCluster(false)}
+            >
+              Cancel
+            </ActionButton>
+          </div>
         </form>
-        {/* ///make cross spin */}
         <button
           className="border border-gray-400 text-gray-400 px-[8px] py-1 rounded-lg text-xs absolute top-4 right-4 hover:transform hover:rotate-180 transition-all duration-300"
           onClick={() => setShowAddCluster(false)}
         >
           X
         </button>
-        {alert.show && <Alert alert={alert} hideAlert={hideAlert} />}
+        {alert.show && (
+          <Alert
+            alert={alert}
+            hideAlert={() => setAlert((prev) => ({ ...prev, show: false }))}
+          />
+        )}
       </div>
     </Modal>
   );
@@ -154,6 +169,7 @@ const AddCluster = ({ setShowAddCluster }) => {
 
 AddCluster.propTypes = {
   setShowAddCluster: PropTypes.func.isRequired,
+  refreshClusters: PropTypes.func.isRequired,
 };
 
 export default AddCluster;

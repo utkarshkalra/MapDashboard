@@ -2,11 +2,11 @@ import Modal from "./Common/Modal";
 import { useState, useCallback } from "react";
 import PropTypes from "prop-types";
 import Alert from "./Common/Alert";
-import useLogin from "../Hooks/useLogin";
 import ActionButton from "./Common/ActionButton";
+import { useAuth } from "../context/AuthContext";
 
-const Login = ({ setShowLogin }) => {
-  const { saveLoginData } = useLogin();
+const Logout = ({ setShowLogout }) => {
+  const { logout } = useAuth();
 
   const [alert, setAlert] = useState({
     show: false,
@@ -29,13 +29,8 @@ const Login = ({ setShowLogin }) => {
       type: "success",
     });
     setTimeout(() => {
-      saveLoginData({
-        username: "",
-        status: 401,
-      });
-      document.cookie =
-        "authorisation=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-      setShowLogin(false);
+      logout();
+      setShowLogout(false);
     }, 500);
   };
 
@@ -50,14 +45,14 @@ const Login = ({ setShowLogin }) => {
           <ActionButton filled={false} onClick={LogoutUser}>
             Yes
           </ActionButton>
-          <ActionButton filled={true} onClick={() => setShowLogin(false)}>
+          <ActionButton filled={true} onClick={() => setShowLogout(false)}>
             No
           </ActionButton>
         </div>
         {/* ///make cross spin */}
         <button
           className="border border-gray-400 text-gray-400 px-[8px] py-1 rounded-lg text-xs absolute top-4 right-4 hover:transform hover:rotate-180 transition-all duration-300"
-          onClick={() => setShowLogin(false)}
+          onClick={() => setShowLogout(false)}
         >
           X
         </button>
@@ -67,8 +62,8 @@ const Login = ({ setShowLogin }) => {
   );
 };
 
-Login.propTypes = {
-  setShowLogin: PropTypes.func.isRequired,
+Logout.propTypes = {
+  setShowLogout: PropTypes.func.isRequired,
 };
 
-export default Login;
+export default Logout;

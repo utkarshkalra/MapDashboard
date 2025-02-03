@@ -1,44 +1,31 @@
 import { useState } from "react";
 import Login from "./Login";
-import ActionButton from "./Common/ActionButton";
-import { IoLogInOutline } from "react-icons/io5";
-import { FaRegUserCircle } from "react-icons/fa";
+import { useAuth } from "../context/AuthContext.jsx";
+import ActionButton from "./Common/ActionButton.jsx";
+import Logout from "./Logout";
 
-import useLogin from "../Hooks/useLogin";
-import LogOut from "./LogOut";
 const Header = () => {
-  const { loginData } = useLogin();
   const [showLogin, setShowLogin] = useState(false);
-  const loginClickHandler = () => {
-    setShowLogin(true);
-  };
+  const [showLogout, setShowLogout] = useState(false);
+  const { user, isAuthenticated } = useAuth();
+
   return (
-    <div className="w-screen p-5 shadow bg-gray-50 flex justify-between items-center">
-      <h3 className="text-2xl font-bold bg-gradient-to-r from-blue-600 via-blue-500 to-blue-400 inline-block text-transparent bg-clip-text">
-        Analytics Dashboard
-      </h3>
-      <ActionButton onClick={loginClickHandler}>
-        {loginData.isLoggedIn ? (
-          <div className="flex items-center gap-2">
-            <FaRegUserCircle />
-            {loginData.userName}
+    <div className="w-full h-16 bg-white shadow-md flex justify-between items-center px-8">
+      <div className="text-xl font-bold">Cluster Map</div>
+      <div>
+        {isAuthenticated ? (
+          <div className="flex items-center gap-4">
+            <span className="text-gray-600">Welcome, {user.username}</span>
+            <ActionButton onClick={() => setShowLogout(true)}>
+              Logout
+            </ActionButton>
           </div>
         ) : (
-          <div className="flex items-center gap-2">
-            Login as admin
-            <IoLogInOutline />
-          </div>
+          <ActionButton onClick={() => setShowLogin(true)}>Login</ActionButton>
         )}
-      </ActionButton>
-      {showLogin && (
-        <>
-          {loginData.isLoggedIn ? (
-            <LogOut setShowLogin={setShowLogin} />
-          ) : (
-            <Login setShowLogin={setShowLogin} />
-          )}
-        </>
-      )}
+      </div>
+      {showLogin && <Login setShowLogin={setShowLogin} />}
+      {showLogout && <Logout setShowLogout={setShowLogout} />}
     </div>
   );
 };

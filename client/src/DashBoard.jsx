@@ -1,32 +1,47 @@
-import { useState, useMemo } from "react";
-import Map from "./component/Map/Map.jsx";
+import { useState, useEffect, useMemo } from "react";
+import Map from "./component/Map/Map";
 import Table from "./component/Table/Table.jsx";
 import Filter from "./component/Filter/Filter.jsx";
 import Metrics from "./component/Metrics/Metrics.jsx";
-import useFetchData from "./Hooks/useFetchData";
 import Info from "./component/Filter/Info.jsx";
-import AddCluster from "./component/AddCluster/AddCluster.jsx";
+import AddCluster from "./component/AddCluster/AddCluster";
 import ActionButton from "./component/Common/ActionButton.jsx";
-import useLogin from "./Hooks/useLogin";
+// import useLogin from "./Hooks/useLogin";
+import { useAuth } from "./context/AuthContext.jsx";
+import clusterService from "./services/clusterService.js";
+
 const DashBoard = () => {
-  const { loginData } = useLogin();
-  const { data, loading, error } = useFetchData("/data");
+  // const { loginData } = useLogin();
   const [minUsers, setMinUsers] = useState(0);
   const [minProjects, setMinProjects] = useState(0);
   const [showAddCluster, setShowAddCluster] = useState(false);
+  const [clusters, setClusters] = useState([]);
+  const { isAuthenticated } = useAuth();
+
   const handleFilter = (minUsers, minProjects) => {
     if (minUsers && minUsers > 0) setMinUsers(minUsers);
     if (minProjects && minProjects > 0) setMinProjects(minProjects);
   };
 
   const filteredData = useMemo(() => {
-    return data?.filter(
+    return clusters?.filter(
       (cluster) => cluster.users >= minUsers && cluster.projects >= minProjects
     );
-  }, [data, minUsers, minProjects]);
+  }, [clusters, minUsers, minProjects]);
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
+  const fetchClusters = async () => {
+    try {
+      console.log("fetching clusters called");
+      const data = await clusterService.getClusters();
+      setClusters(data);
+    } catch (error) {
+      console.error("Failed to fetch clusters:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchClusters();
+  }, []);
 
   return (
     <div className="flex flex-col items-center justify-center w-full h-full px-4 md:px-10 ">
@@ -35,7 +50,7 @@ const DashBoard = () => {
       <div className="map-container w-full h-full rounded-2xl border border-gray-200 shadow bg-gray-50 overflow-hidden mb-6">
         <div className="p-4 md:pe-8 border-b-[1.5px] border-gray-200 text-xl flex justify-between items-center">
           <p>Clusters in India</p>
-          {loginData.isLoggedIn && (
+          {isAuthenticated && (
             <ActionButton onClick={() => setShowAddCluster(true)}>
               Add Cluster +
             </ActionButton>
@@ -54,7 +69,12 @@ const DashBoard = () => {
         </div>
       </div>
       <Table clusters={filteredData} />
-      {showAddCluster && <AddCluster setShowAddCluster={setShowAddCluster} />}
+      {showAddCluster && (
+        <AddCluster
+          setShowAddCluster={setShowAddCluster}
+          refreshClusters={fetchClusters}
+        />
+      )}
     </div>
   );
 };

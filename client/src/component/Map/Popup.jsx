@@ -6,18 +6,20 @@ const CustomPopup = ({ cluster }) => {
     <Tooltip riseOnHover={true}>
       <p className="font-bold border-b-1 mb-1.5">{cluster.name}</p>
       <table>
-        <tr>
-          <td>Users</td>
-          <td className="text-right font-semibold">{cluster.users}</td>
-        </tr>
-        <tr>
-          <td>Leads</td>
-          <td className="text-right font-semibold">{cluster.leads}</td>
-        </tr>
-        <tr>
-          <td>Projects</td>
-          <td className="text-right font-semibold">{cluster.projects}</td>
-        </tr>
+        <tbody>
+          <tr>
+            <td>Users</td>
+            <td className="text-right font-semibold">{cluster.users}</td>
+          </tr>
+          <tr>
+            <td>Leads</td>
+            <td className="text-right font-semibold">{cluster.leads}</td>
+          </tr>
+          <tr>
+            <td>Projects</td>
+            <td className="text-right font-semibold">{cluster.projects}</td>
+          </tr>
+        </tbody>
       </table>
     </Tooltip>
   );

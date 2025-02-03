@@ -1,5 +1,5 @@
 import { BASE_URL } from "./Urls";
-
+import authService from "./authService";
 import axios from "axios";
 
 export const api = axios.create({
@@ -7,9 +7,26 @@ export const api = axios.create({
   withCredentials: true,
 });
 
-const token = JSON.parse(localStorage.getItem("loginData")).token;
+api.interceptors.request.use(
+  (config) => {
+    const token = authService.getToken();
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
 
-api.interceptors.request.use((config) => {
-  config.headers.Authorization = `Bearer ${token}`;
-  return config;
-});
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      authService.logout();
+      window.location.reload();
+    }
+    return Promise.reject(error);
+  }
+);

@@ -32,30 +32,42 @@ const Info = ({ clusters, minUsers, minProjects }) => {
             </th>
           </tr>
         </thead>
-        <tr>
-          <td className={columnCss}>Users:</td>
-          <td className="text-right font-[700]">{metrics.totalUsers}</td>
-        </tr>
-        <tr className="p-2">
-          <td className={columnCss}>Projects:</td>
-          <td className="text-right font-[700]">{metrics.totalProjects}</td>
-        </tr>
-        <tr className="p-2">
-          <td className={columnCss}>Clusters:</td>
-          <td className="text-right font-[700]">{metrics.totalClusters}</td>
-        </tr>
-        <tr className="p-2">
-          <td className={columnCss}>Leads:</td>
-          <td className="text-right font-[700]">{metrics.TotalLeads}</td>
-        </tr>
-        <tr className="p-2">
-          <td className={columnCss}>Users per cluster:</td>
-          <td className="text-right font-[700]">
-            {/* round to 2 decimal places */}
-            {Math.round((metrics.totalUsers / metrics.totalClusters) * 100) /
-              100}
-          </td>
-        </tr>
+        {metrics.totalClusters > 0 ? (
+          <tbody>
+            <tr>
+              <td className={columnCss}>Users:</td>
+              <td className="text-right font-[700]">{metrics.totalUsers}</td>
+            </tr>
+            <tr className="p-2">
+              <td className={columnCss}>Projects:</td>
+              <td className="text-right font-[700]">{metrics.totalProjects}</td>
+            </tr>
+            <tr className="p-2">
+              <td className={columnCss}>Clusters:</td>
+              <td className="text-right font-[700]">{metrics.totalClusters}</td>
+            </tr>
+            <tr className="p-2">
+              <td className={columnCss}>Leads:</td>
+              <td className="text-right font-[700]">{metrics.TotalLeads}</td>
+            </tr>
+            <tr className="p-2">
+              <td className={columnCss}>Users per cluster:</td>
+              <td className="text-right font-[700]">
+                {/* round to 2 decimal places */}
+                {Math.round(
+                  (metrics.totalUsers / metrics.totalClusters) * 100
+                ) / 100}
+              </td>
+            </tr>
+          </tbody>
+        ) : (
+          //loader
+          <tbody>
+            <tr className="h-40 text-center">
+              <td>Loading...</td>
+            </tr>
+          </tbody>
+        )}
       </table>
     </div>
   );
