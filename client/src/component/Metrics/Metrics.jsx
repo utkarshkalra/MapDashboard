@@ -1,10 +1,13 @@
 import { useState, useEffect } from "react";
-import MetricCard from "./MetricCard";
-import useFetchData from "../../Hooks/useFetchData";
 import { PiUsersThree } from "react-icons/pi";
 import { GoProjectRoadmap, GoPerson } from "react-icons/go";
 import { PiChartPieSlice } from "react-icons/pi";
-import { GET_METRICS_ENDPOINT } from "../../services/Urls";
+
+import MetricCard from "./MetricCard.jsx";
+
+import { GET_METRICS_ENDPOINT } from "../../services/Urls.jsx";
+
+import useFetchData from "../../Hooks/useFetchData.jsx";
 
 const Metrics = () => {
   const [metrics, setMetrics] = useState({});

@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 import PropTypes from "prop-types";
-import FloatingInput from "../Common/FloatingInput";
+import FloatingInput from "../Common/FloatingInput.jsx";
 const Filter = ({ handleFilter }) => {
   const [minUsers, setMinUsers] = useState(0);
   const [minProjects, setMinProjects] = useState(0);

@@ -1,5 +1,5 @@
-import { api } from "./api";
-import { GET_ALL_CLUSTERS_ENDPOINT, SAVE_CLUSTERS_ENDPOINT } from "./Urls";
+import { api } from "./api.js";
+import { GET_ALL_CLUSTERS_ENDPOINT, SAVE_CLUSTERS_ENDPOINT } from "./Urls.js";
 
 const clusterService = {
   getClusters: async () => {

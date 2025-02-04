@@ -1,9 +1,9 @@
 import "./App.css";
 import "leaflet/dist/leaflet.css";
-import Header from "./component/Header";
-import Footer from "./component/Footer";
-import DashBoard from "./DashBoard";
-import { AuthProvider } from "./context/AuthContext";
+import Header from "./component/Header.jsx";
+import Footer from "./component/Footer.jsx";
+import DashBoard from "./DashBoard.jsx";
+import { AuthProvider } from "./context/AuthContext.jsx";
 
 function App() {
   return (

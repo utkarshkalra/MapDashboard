@@ -1,9 +1,9 @@
-import Modal from "./Common/Modal";
+import Modal from "./Common/Modal.jsx";
 import { useState, useCallback } from "react";
 import PropTypes from "prop-types";
-import Alert from "./Common/Alert";
-import ActionButton from "./Common/ActionButton";
-import { useAuth } from "../context/AuthContext";
+import Alert from "./Common/Alert.jsx";
+import ActionButton from "./Common/ActionButton.jsx";
+import { useAuth } from "../context/AuthContext.jsx";
 
 const Logout = ({ setShowLogout }) => {
   const { logout } = useAuth();

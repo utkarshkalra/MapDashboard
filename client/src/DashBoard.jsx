@@ -1,10 +1,10 @@
 import { useState, useEffect, useMemo } from "react";
-import Map from "./component/Map/Map";
+import Map from "./component/Map/Map.jsx";
 import Table from "./component/Table/Table.jsx";
 import Filter from "./component/Filter/Filter.jsx";
 import Metrics from "./component/Metrics/Metrics.jsx";
 import Info from "./component/Filter/Info.jsx";
-import AddCluster from "./component/AddCluster/AddCluster";
+import AddCluster from "./component/AddCluster/AddCluster.jsx";
 import ActionButton from "./component/Common/ActionButton.jsx";
 // import useLogin from "./Hooks/useLogin";
 import { useAuth } from "./context/AuthContext.jsx";

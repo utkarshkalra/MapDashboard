@@ -1,7 +1,7 @@
 import { MapContainer, TileLayer, Marker } from "react-leaflet";
-import { isMobile } from "../../Utils";
+import { isMobile } from "../../Utils.js";
 import PropTypes from "prop-types";
-import CustomPopup from "./Popup";
+import CustomPopup from "./Popup.jsx";
 
 const Map = ({ clusters }) => {
   return (

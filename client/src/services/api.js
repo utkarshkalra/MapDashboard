@@ -1,5 +1,5 @@
-import { BASE_URL } from "./Urls";
-import authService from "./authService";
+import { BASE_URL } from "./Urls.js";
+import authService from "./authService.jsx";
 import axios from "axios";
 
 export const api = axios.create({

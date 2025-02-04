@@ -1,5 +1,5 @@
-import { api } from "./api";
-import { LOGIN_ENDPOINT } from "./Urls";
+import { api } from "./api.js";
+import { LOGIN_ENDPOINT } from "./Urls.js";
 const TOKEN_KEY = "token";
 const USER_KEY = "user";
 

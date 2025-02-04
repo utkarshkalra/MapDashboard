@@ -1,8 +1,8 @@
 import { useState } from "react";
-import Login from "./Login";
+import Login from "./Login.jsx";
 import { useAuth } from "../context/AuthContext.jsx";
 import ActionButton from "./Common/ActionButton.jsx";
-import Logout from "./Logout";
+import Logout from "./Logout.jsx";
 
 const Header = () => {
   const [showLogin, setShowLogin] = useState(false);

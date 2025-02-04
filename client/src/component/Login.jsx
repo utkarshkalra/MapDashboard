@@ -1,9 +1,9 @@
-import Modal from "./Common/Modal";
-import FloatingInput from "./Common/FloatingInput";
+import Modal from "./Common/Modal.jsx";
+import FloatingInput from "./Common/FloatingInput.jsx";
 import { useState } from "react";
 import PropTypes from "prop-types";
-import Alert from "./Common/Alert";
-import ActionButton from "./Common/ActionButton";
+import Alert from "./Common/Alert.jsx";
+import ActionButton from "./Common/ActionButton.jsx";
 import { useAuth } from "../context/AuthContext.jsx";
 
 const Login = ({ setShowLogin }) => {

@@ -1,10 +1,10 @@
 import { useState } from "react";
-import Modal from "../Common/Modal";
-import FloatingInput from "../Common/FloatingInput";
-import Alert from "../Common/Alert";
-import ActionButton from "../Common/ActionButton";
+import Modal from "../Common/Modal.jsx";
+import FloatingInput from "../Common/FloatingInput.jsx";
+import Alert from "../Common/Alert.jsx";
+import ActionButton from "../Common/ActionButton.jsx";
 import PropTypes from "prop-types";
-import clusterService from "../../services/clusterService";
+import clusterService from "../../services/clusterService.js";
 import { useAuth } from "../../context/AuthContext.jsx";
 
 const AddCluster = ({ setShowAddCluster, refreshClusters }) => {
