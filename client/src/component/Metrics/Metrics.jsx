@@ -5,9 +5,9 @@ import { PiChartPieSlice } from "react-icons/pi";
 
 import MetricCard from "./MetricCard.jsx";
 
-import { GET_METRICS_ENDPOINT } from "../../services/Urls.jsx";
+import { GET_METRICS_ENDPOINT } from "../../services/Urls.js";
 
-import useFetchData from "../../Hooks/useFetchData.jsx";
+import useFetchData from "../../Hooks/useFetchData.js";
 
 const Metrics = () => {
   const [metrics, setMetrics] = useState({});
