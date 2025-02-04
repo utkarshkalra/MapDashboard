@@ -14,7 +14,7 @@ app = FastAPI(
 
 # CORS configuration
 # allow all origins
-origins = ["http://localhost:5173" , "https://map-dashboard-lfnb.vercel.app/"]
+origins = ["http://localhost:5173" , "https://map-dashboard-lfnb.vercel.app/", "*"]
 
 app.add_middleware(
     CORSMiddleware,
