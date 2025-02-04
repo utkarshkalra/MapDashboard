@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 
 const Table = ({ clusters }) => {
@@ -7,6 +7,10 @@ const Table = ({ clusters }) => {
   const indexOfLastItem = currentPage * PAGESIZE;
   const indexOfFirstItem = indexOfLastItem - PAGESIZE;
   const currentItems = clusters?.slice(indexOfFirstItem, indexOfLastItem);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [clusters]);
 
   const handlePreviousPage = () => {
     setCurrentPage(currentPage > 1 ? currentPage - 1 : 1);

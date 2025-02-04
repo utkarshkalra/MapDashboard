@@ -6,6 +6,8 @@ from jose import jwt, JWTError
 from typing import Optional 
 from database.schemas import all_clusters, get_metrics_data
 from configurations import Settings
+import uuid
+
 router = APIRouter()
 
 async def get_current_user(authorization: Optional[str] = Header(None)):
